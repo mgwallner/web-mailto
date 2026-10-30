@@ -1,0 +1,14 @@
+# Editor and operating-system files
+.vscode/
+.idea/
+*~
+.DS_Store
+
+# Generated archives and browser packages
+*.crx
+*.pem
+*.zip
+
+# Test and coverage output
+coverage/
+*.log

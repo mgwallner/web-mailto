@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "version": "1.0.2",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7ySRAinX91EffxTuMTLskSlnVjEp5YyLVtkHNeGv9CC/tKmQZgircf2cCu1Nyrk/WIpERjpTSvWl6thkydK35X20D/a52lajnvOUw5U3/mGdKPARarZONivigjGdcR5dwOipmVJYgRSCCFa9+c+qchtBfd9vjo8dYkz2otbyify+XM9gYzwXpi+CxDpX1rb+4ypHgYSasNY1n/p1p82eZJZG4HRTjGmZwoGAamhUZpCfb404QfAjuu6TNpjUYz61gYQGOgUIzHiwsGNinOay+UN66yAx/wR1NmksDl3RHtX/9fKldE83LRm/pYrkm8E9LDXQl7SiiConGcqkJjwQJwIDAQAB",
+  "permissions": ["storage", "scripting"],
+  "optional_host_permissions": ["https://*/*"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "__MSG_extensionName__",
+    "default_popup": "popup.html"
+  }
+}

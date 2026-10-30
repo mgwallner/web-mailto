@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Michael G. Wallner
+# SPDX-License-Identifier: GPL-3.0-only
+
+set -u
+
+readonly EXPECTED_EXTENSION_ID="bcbnhoeclfpgfofkaohlailcbeekngha"
+readonly CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+readonly CONFIG_FILE="${CONFIG_HOME}/web-mailto/config"
+
+case "${LANG:-en}" in
+  de*) readonly E_ARG='Genau ein mailto-Link wurde erwartet.'; readonly E_MAILTO='Die übergebene Adresse ist kein mailto-Link.'; readonly E_ID='Die konfigurierte Chrome-Extension-ID ist ungültig.'; readonly E_BROWSER='Chrome oder Chromium wurde nicht gefunden.'; readonly E_COMMAND="Der Browser '%s' wurde nicht gefunden." ;;
+  fr*) readonly E_ARG='Un seul lien mailto était attendu.'; readonly E_MAILTO='L’adresse transmise n’est pas un lien mailto.'; readonly E_ID='L’identifiant Chrome configuré est invalide.'; readonly E_BROWSER='Chrome ou Chromium est introuvable.'; readonly E_COMMAND="Le navigateur '%s' est introuvable." ;;
+  it*) readonly E_ARG='Era previsto esattamente un link mailto.'; readonly E_MAILTO='L’indirizzo fornito non è un link mailto.'; readonly E_ID='L’ID dell’estensione Chrome configurato non è valido.'; readonly E_BROWSER='Chrome o Chromium non è stato trovato.'; readonly E_COMMAND="Il browser '%s' non è stato trovato." ;;
+  es*) readonly E_ARG='Se esperaba exactamente un enlace mailto.'; readonly E_MAILTO='La dirección proporcionada no es un enlace mailto.'; readonly E_ID='El ID configurado de la extensión no es válido.'; readonly E_BROWSER='No se encontró Chrome ni Chromium.'; readonly E_COMMAND="No se encontró el navegador '%s'." ;;
+  *) readonly E_ARG='Exactly one mailto link was expected.'; readonly E_MAILTO='The supplied address is not a mailto link.'; readonly E_ID='The configured Chrome extension ID is invalid.'; readonly E_BROWSER='Chrome or Chromium was not found.'; readonly E_COMMAND="Browser '%s' was not found." ;;
+esac
+
+fail() {
+  printf 'web-mailto: %s\n' "$*" >&2
+  command -v notify-send >/dev/null 2>&1 && notify-send "WEB mailto" "$*"
+  exit 1
+}
+
+[[ $# -eq 1 ]] || fail "$E_ARG"
+mailto_uri=$1
+[[ ${mailto_uri,,} == mailto:* ]] || fail "$E_MAILTO"
+
+extension_id=$EXPECTED_EXTENSION_ID
+browser_command=""
+if [[ -r "$CONFIG_FILE" ]]; then
+  while IFS='=' read -r key value; do
+    case "$key" in
+      extension_id) extension_id=$value ;;
+      browser_command) browser_command=$value ;;
+    esac
+  done < "$CONFIG_FILE"
+fi
+
+[[ $extension_id =~ ^[a-p]{32}$ ]] || fail "$E_ID"
+
+if [[ -z $browser_command ]]; then
+  for candidate in google-chrome google-chrome-stable chromium chromium-browser; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      browser_command=$candidate
+      break
+    fi
+  done
+fi
+[[ -n $browser_command ]] || fail "$E_BROWSER"
+if ! command -v "$browser_command" >/dev/null 2>&1; then
+  printf -v command_error "$E_COMMAND" "$browser_command"
+  fail "$command_error"
+fi
+
+encoded=$(printf '%s' "$mailto_uri" | od -An -v -tx1 | tr -d ' \n' | sed 's/../%&/g')
+dispatch_url="chrome-extension://${extension_id}/dispatch.html?mailto=${encoded}"
+
+nohup "$browser_command" "$dispatch_url" >/dev/null 2>&1 &
+exit 0

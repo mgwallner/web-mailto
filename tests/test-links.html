@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>WEB mailto tests</title></head>
+<body>
+  <h1>WEB mailto tests</h1>
+  <ul>
+    <li><a id="simple" href="mailto:max.mustermann@example.org">Simple recipient</a></li>
+    <li><a id="all" href="mailto:max@example.org,erika@example.org?cc=copy@example.org&amp;bcc=blind@example.org&amp;subject=Unicode%20test%20%C3%A4%C3%B6%C3%BC&amp;body=First%20line%0D%0ASecond%20line%20%26%20symbols%20%2B%20%25">All fields and special characters</a></li>
+    <li><a id="none" href="mailto:?subject=Subject%20only&amp;body=No%20recipient%20yet">Without recipient</a></li>
+  </ul>
+  <script>
+    const texts = {
+      de: ["WEB mailto Tests", "Einfacher Empfänger", "Alle Felder und Sonderzeichen", "Ohne Empfänger"],
+      en: ["WEB mailto tests", "Simple recipient", "All fields and special characters", "Without recipient"],
+      fr: ["Tests de WEB mailto", "Destinataire simple", "Tous les champs et caractères spéciaux", "Sans destinataire"],
+      it: ["Test di WEB mailto", "Destinatario semplice", "Tutti i campi e caratteri speciali", "Senza destinatario"],
+      es: ["Pruebas de WEB mailto", "Destinatario simple", "Todos los campos y caracteres especiales", "Sin destinatario"]
+    };
+    const language = navigator.language.slice(0, 2);
+    const [title, simple, all, none] = texts[language] || texts.en;
+    document.documentElement.lang = texts[language] ? language : "en";
+    document.title = title;
+    document.querySelector("h1").textContent = title;
+    document.getElementById("simple").textContent = simple;
+    document.getElementById("all").textContent = all;
+    document.getElementById("none").textContent = none;
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="optionsTitle"></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page options-page">
+  <main class="card options-card">
+    <h1 data-i18n="optionsTitle"></h1>
+    <p data-i18n="optionsIntro"></p>
+    <p data-i18n-html="optionsPrivacyNotice"></p>
+    <form id="options-form">
+      <label for="provider" data-i18n="webmailSystem"></label>
+      <select id="provider" name="provider">
+        <option value="groupwise" data-i18n="providerGroupWise"></option>
+        <option value="sogo" data-i18n="providerSogo"></option>
+        <option value="roundcube" data-i18n="providerRoundcube"></option>
+      </select>
+      <label for="webmail-url" data-i18n="webmailUrl"></label>
+      <input id="webmail-url" name="webmail-url" type="url" required
+        data-i18n-placeholder="urlPlaceholder" autocomplete="url">
+      <p class="hint" data-i18n="urlHint"></p>
+      <div class="actions">
+        <button type="submit" data-i18n="saveAndAllow"></button>
+        <button id="open-webmail" class="secondary" type="button" data-i18n="openWebmail"></button>
+      </div>
+    </form>
+    <p id="options-status" role="status"></p>
+  </main>
+  <script src="common.js"></script>
+  <script src="page-i18n.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

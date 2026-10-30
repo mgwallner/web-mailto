@@ -1,0 +1,18 @@
+[Desktop Entry]
+# SPDX-FileCopyrightText: 2026 Michael G. Wallner
+# SPDX-License-Identifier: GPL-3.0-only
+
+Type=Application
+Name=WEB mailto
+Comment=mailto-Links im konfigurierten Webmail-Client öffnen
+Comment[de]=mailto-Links im konfigurierten Webmail-Client öffnen
+Comment[en]=Open mailto links in the configured webmail client
+Comment[fr]=Ouvrir les liens mailto dans le client webmail configuré
+Comment[it]=Apri i link mailto nel client webmail configurato
+Comment[es]=Abrir enlaces mailto en el cliente webmail configurado
+Exec=@HANDLER_PATH@ %u
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/mailto;
+Categories=Network;Email;
+[Desktop Entry]
